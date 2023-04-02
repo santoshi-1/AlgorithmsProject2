@@ -11,17 +11,17 @@ than or equal to h"""
 
 
 def calculateMaxNoOfTrees(m, n, h, grid):
-    maxTrees = [[0]*(n+1) for i in range(m+1)]
+    max_trees = [[0]*(n+1) for i in range(m+1)]
     for row in range(1, m + 1):
         for col in range(1, n + 1):
             if grid[row - 1][col - 1] >= h:
-                maxTrees[row][col] += 1
-            maxTrees[row][col] += maxTrees[row - 1][col] + \
-                maxTrees[row][col - 1] - maxTrees[row - 1][col - 1]
-    return maxTrees
+                max_trees[row][col] += 1
+            max_trees[row][col] += max_trees[row - 1][col] + \
+                max_trees[row][col - 1] - max_trees[row - 1][col - 1]
+    return max_trees
 
 
-def calculateMaxSquarePlot(m, n, h, maxTrees, grid):
+def calculateMaxSquarePlot(m, n, h, max_trees, grid):
     result = []
     result_square_size = 0
     for row in range(1, m + 1):
@@ -33,11 +33,11 @@ def calculateMaxSquarePlot(m, n, h, maxTrees, grid):
                 if (bottom_row > m or bottom_col > n):
                     break
                 else:
-                    totalNoOfTrees = (k + 1) * (k + 1)
-                    treesPlotted = maxTrees[bottom_row][bottom_col] - maxTrees[bottom_row][top_col - 1] - \
-                        maxTrees[top_row - 1][bottom_col] + \
-                        maxTrees[top_row-1][top_col-1]
-                    diff = totalNoOfTrees - treesPlotted
+                    total_no_of_trees = (k + 1) * (k + 1)
+                    trees_plotted = max_trees[bottom_row][bottom_col] - max_trees[bottom_row][top_col - 1] - \
+                        max_trees[top_row - 1][bottom_col] + \
+                        max_trees[top_row-1][top_col-1]
+                    diff = total_no_of_trees - trees_plotted
                     if diff > 4 or result_square_size >= k + 1:
                         continue
                     else:
@@ -58,6 +58,6 @@ def calculateMaxSquarePlot(m, n, h, maxTrees, grid):
     return result
 
 
-maxTrees = calculateMaxNoOfTrees(m, n, h, grid)
-result = calculateMaxSquarePlot(m, n, h, maxTrees, grid)
+max_trees = calculateMaxNoOfTrees(m, n, h, grid)
+result = calculateMaxSquarePlot(m, n, h, max_trees, grid)
 print(result)
