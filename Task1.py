@@ -29,7 +29,7 @@ def calculateMaxSquarePlot(m, n, h):
                             break
                     if is_max_square:
                         if col_end - col_start == row_end - row_start:
-                            if result_square_size <= row_end - row_start:
+                            if result_square_size < row_end - row_start:
                                 result_square_size = row_end - row_start
                                 result = [row_start + 1, col_start + 1,
                                           row_end + 1, col_end + 1]
