@@ -11,17 +11,17 @@ than or equal to h"""
 
 
 def calculateMaxNoOfTrees(m, n, h, grid):
-    max_trees = [[0]*(n+1) for i in range(m+1)]
+    valid_tree_cells = [[0]*(n+1) for i in range(m+1)]
     for row in range(1, m + 1):
         for col in range(1, n + 1):
             if grid[row - 1][col - 1] >= h:
-                max_trees[row][col] += 1
-            max_trees[row][col] += max_trees[row - 1][col] + \
-                max_trees[row][col - 1] - max_trees[row - 1][col - 1]
-    return max_trees
+                valid_tree_cells[row][col] += 1
+            valid_tree_cells[row][col] += valid_tree_cells[row - 1][col] + \
+                valid_tree_cells[row][col - 1] - valid_tree_cells[row - 1][col - 1]
+    return valid_tree_cells
 
 
-def calculateMaxSquarePlot(m, n, h, max_trees, grid):
+def calculateMaxSquarePlot(m, n, h, valid_tree_cells, grid):
     result = []
     result_square_size = 0
     for row in range(1, m + 1):
@@ -34,9 +34,9 @@ def calculateMaxSquarePlot(m, n, h, max_trees, grid):
                     break
                 else:
                     total_no_of_trees = (k + 1) * (k + 1)
-                    trees_plotted = max_trees[bottom_row][bottom_col] - max_trees[bottom_row][top_col - 1] - \
-                        max_trees[top_row - 1][bottom_col] + \
-                        max_trees[top_row-1][top_col-1]
+                    trees_plotted = valid_tree_cells[bottom_row][bottom_col] - valid_tree_cells[bottom_row][top_col - 1] - \
+                        valid_tree_cells[top_row - 1][bottom_col] + \
+                        valid_tree_cells[top_row-1][top_col-1]
                     diff = total_no_of_trees - trees_plotted
                     if diff > 4 or result_square_size >= k + 1:
                         continue
@@ -58,6 +58,6 @@ def calculateMaxSquarePlot(m, n, h, max_trees, grid):
     return result
 
 
-max_trees = calculateMaxNoOfTrees(m, n, h, grid)
-result = calculateMaxSquarePlot(m, n, h, max_trees, grid)
-print(result)
+valid_tree_cells = calculateMaxNoOfTrees(m, n, h, grid)
+result = calculateMaxSquarePlot(m, n, h, valid_tree_cells, grid)
+print(result[0], result[1], result[2], result[3])

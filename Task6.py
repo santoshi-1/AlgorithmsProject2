@@ -40,4 +40,4 @@ def calculateMaxSquarePlot(m, n, h, k):
 
 
 result = calculateMaxSquarePlot(m, n, h, k)
-print(result)
+print(result[0], result[1], result[2], result[3])
