@@ -23,7 +23,7 @@ def calculateMaxSquarePlot(m, n, h, k):
                     count = 0
                     for x in range(row_start, row_end + 1):
                         for y in range(col_start, col_end + 1):
-                            if grid[x][y] < h and count > k:
+                            if grid[x][y] < h and count >= k:
                                 is_max_square = False
                                 break
                             if grid[x][y] < h:
