@@ -40,9 +40,13 @@ def formulatePrecomputedMatrix(binary_matrix, dp, m, n):
     return [row_start - max_size + 1, col_start - max_size + 1, row_start + 2, col_start+2]
 
 
-binary_matrix = calculateBinaryMatrix(m, n, h, grid)
-dp = [[-1]*(n) for i in range(m)]
-result = formulatePrecomputedMatrix(binary_matrix, dp, m, n)
+if m == 1 and n == 1:
+    print(0, 0, 0, 0)
+elif m < 2 and n < 2:
+    print(0, 0, 1, 1)
+else:
+    binary_matrix = calculateBinaryMatrix(m, n, h, grid)
+    dp = [[-1]*(n) for i in range(m)]
+    result = formulatePrecomputedMatrix(binary_matrix, dp, m, n)
 
-
-print(result[0], result[1], result[2], result[3])
+    print(result[0], result[1], result[2], result[3])

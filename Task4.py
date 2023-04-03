@@ -10,54 +10,72 @@ for i in range(0, m):
 than or equal to h"""
 
 
-def calculateMaxNoOfTrees(m, n, h, grid):
-    valid_tree_cells = [[0]*(n+1) for i in range(m+1)]
-    for row in range(1, m + 1):
-        for col in range(1, n + 1):
-            if grid[row - 1][col - 1] >= h:
-                valid_tree_cells[row][col] += 1
-            valid_tree_cells[row][col] += valid_tree_cells[row - 1][col] + \
-                valid_tree_cells[row][col - 1] - valid_tree_cells[row - 1][col - 1]
-    return valid_tree_cells
+def calculateBinaryMatrix(m, n, h, grid):
+    binary_matrix = [[0]*(n) for i in range(m)]
+    for row in range(0, m):
+        for col in range(0, n):
+            if grid[row][col] >= h:
+                binary_matrix[row][col] = 1
+    return binary_matrix
 
 
-def calculateMaxSquarePlot(m, n, h, valid_tree_cells, grid):
+def formulatePrecomputedMatrix(m, n, binary_matrix):
+    precomputed_matrix = [[0]*(n) for i in range(m)]
+    for row in range(0, m):
+        for col in range(0, n):
+            if row == 0 or col == 0 or row == m-1 or col == n-1:
+                precomputed_matrix[row][col] = 0
+            elif (binary_matrix[row][col] == 1):
+                if binary_matrix[row-1][col] == 1 and binary_matrix[row][col-1] == 1 and binary_matrix[row+1][col] == 1 and binary_matrix[row][col+1] == 1:
+                    precomputed_matrix[row][col] = precomputed_matrix[row - 1][col] + 1
+    return precomputed_matrix
+
+
+def calculateMaxSquarePlot(m, n, precomputed_matrix):
     result = []
     result_square_size = 0
-    for row in range(1, m + 1):
-        for col in range(1, n + 1):
-            for k in range(0, min(m, n)):
-                top_row, top_col = row, col
-                bottom_row, bottom_col = row + k, col + k
-
-                if (bottom_row > m or bottom_col > n):
-                    break
+    col_end = 0
+    row_end = 0
+    for row in range(0, m):
+        for col in range(0, n):
+            count = 0
+            for i in range(col, n):
+                if precomputed_matrix[row][i] >= precomputed_matrix[row][col]:
+                    count += 1
                 else:
-                    total_no_of_trees = (k + 1) * (k + 1)
-                    trees_plotted = valid_tree_cells[bottom_row][bottom_col] - valid_tree_cells[bottom_row][top_col - 1] - \
-                        valid_tree_cells[top_row - 1][bottom_col] + \
-                        valid_tree_cells[top_row-1][top_col-1]
-                    diff = total_no_of_trees - trees_plotted
-                    if diff > 4 or result_square_size >= k + 1:
-                        continue
-                    else:
-                        count = 0
-                        if grid[top_row - 1][top_col - 1] < h:
-                            count += 1
-                        if grid[top_row - 1][bottom_col - 1] < h:
-                            count += 1
-                        if grid[bottom_row - 1][top_col - 1] < h:
-                            count += 1
-                        if grid[bottom_row - 1][bottom_col - 1] < h:
-                            count += 1
+                    break
 
-                        if (diff == count and result_square_size < k + 1):
-                            result_square_size = k + 1
-                            result = [top_row, top_col, bottom_row, bottom_col]
+                if count >= precomputed_matrix[row][col] - 1:
+                    if result_square_size <= precomputed_matrix[row][col] + 1:
+                        result_square_size = precomputed_matrix[row][col] + 1
+                        col_end = i + 2
+                        row_end = row + 2
+                    break
+            count = 0
+            for i in range(col, -1, -1):
+                if precomputed_matrix[row][i] >= precomputed_matrix[row][col]:
+                    count += 1
+                else:
+                    break
+                if count >= precomputed_matrix[row][col] - 1:
+                    if result_square_size <= precomputed_matrix[row][col] + 1:
+                        result_square_size = precomputed_matrix[row][col] + 1
+                        col_end = col + 2
+                        row_end = row + 2
+                    break
+
+    result = [row_end - result_square_size, col_end -
+              result_square_size, row_end, col_end]
 
     return result
 
 
-valid_tree_cells = calculateMaxNoOfTrees(m, n, h, grid)
-result = calculateMaxSquarePlot(m, n, h, valid_tree_cells, grid)
-print(result[0], result[1], result[2], result[3])
+if m == 1 and n == 1:
+    print(0, 0, 0, 0)
+elif m < 2 and n < 2:
+    print(0, 0, 1, 1)
+else:
+    binary_matrix = calculateBinaryMatrix(m, n, h, grid)
+    precomputed_matrix = formulatePrecomputedMatrix(m, n, binary_matrix)
+    result = calculateMaxSquarePlot(m, n, precomputed_matrix)
+    print(result[0], result[1], result[2], result[3])

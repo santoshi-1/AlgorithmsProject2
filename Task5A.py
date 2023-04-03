@@ -44,24 +44,26 @@ def formulatePrecomputedMatrix(row, col, binary_matrix, dp, m, n):
     return size
 
 
-binary_matrix = calculateBinaryMatrix(m, n, h, grid)
-dp = [[-1]*(n) for i in range(m)]
+if m == 1 and n == 1:
+    print(0, 0, 0, 0)
+elif m < 2 and n < 2:
+    print(0, 0, 1, 1)
+else:
+    binary_matrix = calculateBinaryMatrix(m, n, h, grid)
+    dp = [[-1]*(n) for i in range(m)]
+    max_size = 0
+    result_row = result_col = 0
+    for i in range(0, m):
+        for j in range(0, n):
+            if dp[i][j] == -1:
+                dp[i][j] = formulatePrecomputedMatrix(
+                    i, j, binary_matrix, dp, m-1, n-1)
+                if (dp[i][j] > max_size):
+                    result_row = i
+                    result_col = j
+                    max_size = dp[i][j]
 
-max_size = 0
-result_row = result_col = 0
-for i in range(0, m):
-    for j in range(0, n):
-        if dp[i][j] == -1:
-            dp[i][j] = formulatePrecomputedMatrix(
-                i, j, binary_matrix, dp, m-1, n-1)
-            if (dp[i][j] > max_size):
-                result_row = i
-                result_col = j
-                max_size = dp[i][j]
+    result = [result_row, result_col, result_row +
+              max_size + 1, result_col + max_size + 1]
 
-
-result = [result_row, result_col, result_row +
-          max_size + 1, result_col + max_size + 1]
-
-
-print(result[0], result[1], result[2], result[3])
+    print(result[0], result[1], result[2], result[3])
