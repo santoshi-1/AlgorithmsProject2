@@ -18,3 +18,9 @@ run5B:
 
 run6:
 	python3 Task6.py
+
+run7A:
+	python3 Task7A.py
+
+run7B:
+	python3 Task7B.py
