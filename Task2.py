@@ -7,7 +7,13 @@ for i in range(0, m):
 
 
 """ Function that calculates the maximum size of the square with the value of each plot greater
-than or equal to h"""
+than or equal to h
+
+Initially we are fixing the row_start, col_start values and from this point we are checking for every possible 
+square length of size 1 to min(m, n). This can be done by moving diagonally and checking all the elements in the square.
+If we encounter any element with value < h, we break out of the loop and check for next plot.
+
+"""
 
 
 def calculateMaxSquarePlot(m, n, h):
@@ -19,8 +25,10 @@ def calculateMaxSquarePlot(m, n, h):
         for col in range(0, n):
             if grid[row][col] >= h:
                 curr_square_size = 1
+                #traversing through the diagonal
                 while row + curr_square_size < m and col + curr_square_size < n and grid[row + curr_square_size][col + curr_square_size] >= h:
                     is_max_square = True
+                    #check for every value within the square of length row_col_end
                     for row_col_end in range(0, curr_square_size + 1):
                         if grid[row + curr_square_size][col + row_col_end] < h or grid[row + row_col_end][col + curr_square_size] < h:
                             is_max_square = False

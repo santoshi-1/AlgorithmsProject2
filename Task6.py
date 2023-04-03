@@ -7,7 +7,14 @@ for i in range(0, m):
 
 
 """ Function that calculates the maximum size of the square with the value of each plot greater
-than or equal to h"""
+than or equal to h
+
+At first we are fixing the row_start, col_start values and then we are checking for every possible row_end, col_end values
+after we fix the four corners, we are iterating through the matrix from row_start, col_start to row _end and col_end to check
+if the square is having all ones with the contraint that it can have upto k zeros. If such square exits and 
+its length is greater the max_square_size found so far, we are updating the value
+
+"""
 
 
 def calculateMaxSquarePlot(m, n, h, k):
