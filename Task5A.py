@@ -23,23 +23,23 @@ def calculateBinaryMatrix(m, n, h, grid):
     return binary_matrix
 
 
-def formulatePrecomputedMatrix(row, col, binary_matrix, dp, m, n):
+def formulatePrecomputedMatrix(row, col, binary_matrix, opt, m, n):
     # base case
     if row == m or col == n or binary_matrix[row][col] == 0:
         return 0
 
     # check memoization table
-    elif dp[row][col] != -1:
-        return dp[row][col]
+    elif opt[row][col] != -1:
+        return opt[row][col]
 
     # recursive case
-    right = formulatePrecomputedMatrix(row, col + 1, binary_matrix, dp, m, n)
-    below = formulatePrecomputedMatrix(row + 1, col, binary_matrix, dp, m, n)
+    right = formulatePrecomputedMatrix(row, col + 1, binary_matrix, opt, m, n)
+    below = formulatePrecomputedMatrix(row + 1, col, binary_matrix, opt, m, n)
     diagonal = formulatePrecomputedMatrix(
-        row + 1, col + 1, binary_matrix, dp, m, n)
+        row + 1, col + 1, binary_matrix, opt, m, n)
 
     size = 1 + min(right, below, diagonal)
-    dp[row][col] = size
+    opt[row][col] = size
 
     return size
 
@@ -50,18 +50,18 @@ elif m < 2 and n < 2:
     print(0, 0, 1, 1)
 else:
     binary_matrix = calculateBinaryMatrix(m, n, h, grid)
-    dp = [[-1]*(n) for i in range(m)]
+    opt = [[-1]*(n) for i in range(m)]
     max_size = 0
     result_row = result_col = 0
     for i in range(0, m):
         for j in range(0, n):
-            if dp[i][j] == -1:
-                dp[i][j] = formulatePrecomputedMatrix(
-                    i, j, binary_matrix, dp, m-1, n-1)
-                if (dp[i][j] > max_size):
+            if opt[i][j] == -1:
+                opt[i][j] = formulatePrecomputedMatrix(
+                    i, j, binary_matrix, opt, m-1, n-1)
+                if (opt[i][j] > max_size):
                     result_row = i
                     result_col = j
-                    max_size = dp[i][j]
+                    max_size = opt[i][j]
 
     result = [result_row, result_col, result_row +
               max_size + 1, result_col + max_size + 1]
