@@ -28,11 +28,11 @@ def formulatePrecomputedMatrix(row, col, binary_matrix, opt, m, n):
     if row == m or col == n or binary_matrix[row][col] == 0:
         return 0
 
-    # check memoization table
+    # check if the value exists in the memoization table
     elif opt[row][col] != -1:
         return opt[row][col]
 
-    # recursive case
+    # recursive case for checking the right , below and diagonal elements
     right = formulatePrecomputedMatrix(row, col + 1, binary_matrix, opt, m, n)
     below = formulatePrecomputedMatrix(row + 1, col, binary_matrix, opt, m, n)
     diagonal = formulatePrecomputedMatrix(
