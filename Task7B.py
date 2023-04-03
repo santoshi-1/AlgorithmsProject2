@@ -6,13 +6,7 @@ for i in range(0, m):
     grid.append(row)
 
 
-""" Function that calculates the maximum size of the square with the value of each plot greater
-than or equal to h
-
-
-for each and every sub matrix of size k i.e, from 1 tom min(m,n) find the largest square that can be possible form that index by
-traversing diagonally. The below implementation takes O(m x n x min(m,n))
-
+"""compute the pre computed matrix where each contains the count of all the one's until that cell from the cell (0,0).
 """
 
 
@@ -26,6 +20,11 @@ def calculateMaxNoOfTrees(m, n, h, grid):
                 valid_tree_cells[row][col - 1] - \
                 valid_tree_cells[row - 1][col - 1]
     return valid_tree_cells
+
+
+"""Using the precomputed matrix, for every possible square length find the number of invalid cells with plot having tree < h.
+    for every such possible square, it can be done in O(1) time. Using these invalid cells, we can compute the possible largest square.
+ """
 
 
 def calculateMaxSquarePlot(m, n, h, k, valid_tree_cells, grid):
